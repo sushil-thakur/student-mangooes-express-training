@@ -22,9 +22,9 @@ const studentSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: true,
-        trim: true,
-        enum: ["male", "female", "other", "preferNotToSay"],
+        // required: false,
+        // trim: true,
+        // enum: ["male", "female", "other", "preferNotToSay"],
     },
     phoneNumber: {
         type: String,

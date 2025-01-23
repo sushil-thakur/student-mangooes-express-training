@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 import Student from './student.list.js';
 import jwt from 'jsonwebtoken';
 import studentValidationSchema from './student.validation.js';
+import Yup from 'yup';
 
 
 // Register route

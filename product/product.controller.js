@@ -1,12 +1,13 @@
 import express from 'express';
 import ProductTable from './product.model.js';
 import  productValidationSchema  from './product.validation.js';
+import isStudent from '../middleware/authentication.middleware.js';
 
 const router =express.Router();
 
 
 //sdd product
-router.post("/product/add",
+router.post("/product/add", isStudent,
     async(req, res, next)=>{
       
 
