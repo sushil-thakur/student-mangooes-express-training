@@ -3,10 +3,20 @@ const router =express.Router();
 import bcrypt from 'bcrypt'
 import Student from './student.list.js';
 import jwt from 'jsonwebtoken';
+import studentValidationSchema from './student.validation.js';
 
 
 // Register route
-router.post("/student/register", async (req, res) => {
+router.post("/student/register", async (req, res, next) => {
+    //validate data
+    try {
+        req.body = await studentValidationSchema.validate(req.body);
+        next();
+    } catch (error) {
+        return res.status(400).send({ message: error.message });
+    }
+}, async (req, res) => {
+    //create schema
     try {
         const newStudent = req.body;
 
@@ -30,7 +40,21 @@ router.post("/student/register", async (req, res) => {
 });
 
 // Login route
-router.post("/student/login", async (req, res) => {
+router.post("/student/login",
+   async (req,res,next)=>{
+        const loginStudentValidationSchema = Yup.object({
+            email: Yup.string().required().email().max(100),
+            password: Yup.string().required().max(100).trim(),
+        });
+
+    try {
+        req.body = await loginStudentValidationSchema.validate(req.body);
+        next();
+    } catch (error) {
+        return res.status(400).send({ message: error.message });
+    }
+},
+async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -65,3 +89,4 @@ router.post("/student/login", async (req, res) => {
     }
 });
 export{router as studentController};
+

@@ -1,7 +1,8 @@
 import express from 'express';
 import mongoose from "mongoose";
 
-import { studentController } from './student.controller.js';
+import { studentController } from './student/student.controller.js';
+import { productController } from './product/product.controller.js';
 
 const app=express();
 
@@ -9,6 +10,7 @@ const app=express();
 app.use(express.json());
 //datebase connection
 app.use(studentController);
+app.use(productController);
 //database connect
 const dbConnect = async()=>{
     try{
