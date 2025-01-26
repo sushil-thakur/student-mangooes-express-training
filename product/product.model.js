@@ -1,59 +1,67 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-//set schema/rule/structure
-const productSchema = new mongoose.Schema({
-    name:
-    {
-    type:String,
-    required:true,
-    trim:true,
-    maxlenght:160,
+// set schema/rule/structure
+const productSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 155,
     },
-    price:{type:Number,
-    required:true,
-    min:0,
+    price: {
+      type: Number,
+      required: true,
+      min: 0,
     },
-    brand:
-    {type:String,
-    required:true,
-    trim:true,
-    maxlenght:150,
+    brand: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 155,
     },
-    category:{
-        type:String,
-        required:true,
-        trim:true,
-        enum:["grocery","beauty","electronics","fashion","toys","shoes","sports","books","furniture","kitchen","appliances","others"],
-        
+    category: {
+      type: String,
+      required: true,
+      trim: true,
+      enum: [
+        'grocery',
+        'electronics',
+        'electrical',
+        'clothing',
+        'kitchen',
+        'kids',
+        'laundry',
+      ],
     },
-    image:{
-        type:String,
-        required:false,
-        trim:true,
-    
+    image: {
+      type: String,
+      required: false,
+      trim: true,
     },
+    quantity: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-    quantity:{
-        type:Number,
-        required:true,
-        min:1,
-    },
+// create model/table/collection
+const ProductTable = mongoose.model('Product', productSchema);
 
-},
-{
-    timestamps:true,
-})
-
-//create model/tabel/collection
-const ProductTable = mongoose.model("product", productSchema);
 export default ProductTable;
-
-//product
-//_name
-//name
-//price
-//brand
-//image
-//category
-//quantity
-//created_at
+//
+// product
+// _id
+// name
+// price
+// brand
+// category
+// image
+// quantity
+// created_at
+// updated_at
