@@ -12,4 +12,4 @@ const validateMongoIdFromReqParams = (req, res, next) => {
     }
     next();
 };
-export{validateMongoIdFromReqParams};
+export  default {validateMongoIdFromReqParams};

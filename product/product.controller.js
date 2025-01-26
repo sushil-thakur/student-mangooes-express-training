@@ -112,4 +112,97 @@ async(req,res)=>{
 
     return res.status(200).send({message:"success",productDetails:product});
 
+    router.post(
+        '/product/list',
+        isUser,
+        async (req, res, next) => {
+          const paginationSchema = Yup.object({
+            page: Yup.number().positive().integer().default(1),
+            limit: Yup.number().positive().integer().default(10),
+          });
+      
+          try {
+            req.body = await paginationSchema.validate(req.body);
+          } catch (error) {
+            return res.status(400).send({ message: error.message });
+          }
+          next();
+        },
+        async (req, res) => {
+          // extract page and limit from req.body
+          const paginationData = req.body;
+      
+          const limit = paginationData.limit;
+          const page = paginationData.page;
+      
+          const skip = (page - 1) * limit;
+      
+          const products = await ProductTable.aggregate([
+            {
+              $match: {},
+            },
+      
+            { $skip: skip },
+            { $limit: limit },
+          ]);
+      
+              const totalItem = await ProductTable.find().countDocuments();
+              return res.status(200).send({ message: 'success', products, totalItem });
+            }
+        );
+      
+
+//edit
+    router.put("/product/edit/:id", isStudent,validateMongoIdFromReqParams,(req, res, next)=>{
+        //create schema
+         const productValidationSchema = Yup.object({
+            name: Yup.string().required().max(160),
+            price: Yup.number().required().min(0),
+            brand: Yup.string().required().max(150),
+            category: Yup.string().required().oneOf(["grocery", "beauty", "electronics", "fashion", "toys", "shoes", "sports", "books", "furniture", "kitchen", "appliances", "others"]),
+            image: Yup.string().notRequired(),
+            quantity: Yup.number().required().min(1),
+        });
+    async (req, res, next) => {
+        try {
+            req.body = await productValidationSchema.validate(req.body);
+            next();
+        } catch (error) {
+            return res.status(400).send({message: error.message});
+        }
+    },
+    async(req, res)=>{
+        //extract product fromm req params
+        const productId = req.params.id;
+        //find product
+        const product = await ProductTable.findOne({_id:productId});
+
+        //if not product , throw error
+        if(!product){
+            return res.status(404).send({message:"product does not exist"});
+        }
+        //extract new value from req body
+        const newValues = req.body;
+        await ProductTable.updateOne(
+            {_id:productId},
+            {
+                $set:{
+                    name:newValues.name,
+                    brand:newValues.brand,
+                    price:newValues.price,
+                    quantity:newValues.quantity,
+                    category:newValues.category
+                },
+            }
+        );
+        return res.status(200)
+        .send({message:"product is upsate sucessfully"})
+    }
+    
+    }
+);
+
+export {router as productController};
+
+
 export {router as productController};
