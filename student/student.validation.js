@@ -1,14 +1,12 @@
 import yup from 'yup';
 
 const studentValidationSchema = yup.object ({
-    firstName: yup.string().required().max(255),
-    lastName: yup.string().required().max(100),
-    password: yup.string().required().max(100).trim(),
+    fullName: yup.string().required().max(255),
     email: yup.string().required().email().max(100),
-    age: yup.number().notRequired().min(8, "Age must be at least 8"),
+    password: yup.string().required().max(100).trim(),
     address: yup.string().required().max(255),
-    dateOfBirth: yup.date().required(),
-    gender: yup.string().required().oneOf(["Male", "Female", "Other"]),
+    gender: yup.string().required().oneOf(["Male", "Female", "Other", "PreferNotToSay"]),
+    phoneNumber: yup.string().notRequired().trim(),
     });
 
 export default studentValidationSchema;

@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from "mongoose";
+import cors from "cors";
 
 import { studentController } from './student/student.controller.js';
 import { productController } from './product/product.controller.js';
@@ -8,6 +9,7 @@ const app=express();
 
 //to make app understand json
 app.use(express.json());
+app.use(cors());
 //datebase connection
 app.use(studentController);
 app.use(productController);

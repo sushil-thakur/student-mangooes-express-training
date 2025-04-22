@@ -157,6 +157,7 @@ router.put(
       name: Yup.string().required().trim().max(155),
       brand: Yup.string().required().trim().max(155),
       price: Yup.number().required().min(0),
+      description: Yup.string().notRequired().trim(),
       quantity: Yup.number().required().min(1),
       category: Yup.string()
         .required()
